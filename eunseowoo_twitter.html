@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>은서우 (@eunseowoo_piano) / X</title>
+<style>
+  :root{
+    --bg:#000000;
+    --bg-hover:#080808;
+    --border:#2f3336;
+    --text:#e7e9ea;
+    --sub:#71767b;
+    --blue:#1d9bf0;
+    --blue-dim:#1d9bf033;
+    --pink:#f91880;
+    --green:#00ba7c;
+    --gold:#ffd400;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Apple SD Gothic Neo","Malgun Gothic","Segoe UI",Helvetica,Arial,sans-serif;
+    display:flex;
+    justify-content:center;
+  }
+  .app{
+    width:100%;
+    max-width:600px;
+    border-left:1px solid var(--border);
+    border-right:1px solid var(--border);
+    min-height:100vh;
+  }
+  .header{
+    position:sticky;
+    top:0;
+    background:rgba(0,0,0,0.85);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+    padding:12px 16px;
+    display:flex;
+    align-items:center;
+    gap:20px;
+    z-index:10;
+  }
+  .header .back{
+    width:20px;height:20px;
+    color:var(--text);
+  }
+  .header .title-block{
+    display:flex;
+    flex-direction:column;
+    line-height:1.25;
+  }
+  .header .title-block h1{
+    font-size:20px;
+    font-weight:800;
+    margin:0;
+  }
+  .header .title-block span{
+    font-size:13px;
+    color:var(--sub);
+  }
+
+  .profile-banner{
+    height:120px;
+    background:linear-gradient(135deg,#3a2f52,#1c1730 55%,#0c0a14);
+    position:relative;
+  }
+  .profile-banner::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(255,255,255,0.06) 0, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(255,255,255,0.05) 0, transparent 45%);
+  }
+  .profile-head{
+    padding:0 16px;
+    position:relative;
+  }
+  .avatar-big{
+    width:88px;height:88px;
+    border-radius:50%;
+    background:linear-gradient(160deg,#cfd8e3,#8b96a8 60%,#4b5563);
+    border:4px solid var(--bg);
+    margin-top:-44px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:34px;
+    font-weight:700;
+    color:#1c1c1c;
+    letter-spacing:-1px;
+  }
+  .follow-btn{
+    float:right;
+    margin-top:12px;
+    background:#eff3f4;
+    color:#0f1419;
+    border:none;
+    border-radius:999px;
+    padding:8px 16px;
+    font-weight:700;
+    font-size:14px;
+    cursor:pointer;
+  }
+  .profile-info{
+    padding-top:12px;
+  }
+  .profile-info h2{
+    margin:0;
+    font-size:20px;
+    font-weight:800;
+    display:flex;
+    align-items:center;
+    gap:4px;
+  }
+  .verified{
+    width:18px;height:18px;
+    fill:var(--blue);
+    flex-shrink:0;
+  }
+  .handle{
+    color:var(--sub);
+    font-size:14px;
+    margin-top:2px;
+  }
+  .bio{
+    font-size:14px;
+    margin:12px 0;
+    line-height:1.4;
+  }
+  .meta-row{
+    color:var(--sub);
+    font-size:14px;
+    display:flex;
+    gap:16px;
+    margin-bottom:12px;
+  }
+  .meta-row span{display:flex;align-items:center;gap:4px;}
+  .stats-row{
+    display:flex;
+    gap:20px;
+    font-size:14px;
+    color:var(--sub);
+    margin-bottom:12px;
+  }
+  .stats-row b{color:var(--text);}
+
+  .tabs{
+    display:flex;
+    border-bottom:1px solid var(--border);
+  }
+  .tabs div{
+    flex:1;
+    text-align:center;
+    padding:14px 0;
+    font-size:15px;
+    font-weight:600;
+    color:var(--sub);
+    position:relative;
+    cursor:pointer;
+  }
+  .tabs div.active{color:var(--text);}
+  .tabs div.active::after{
+    content:"";
+    position:absolute;
+    bottom:0;left:50%;
+    transform:translateX(-50%);
+    width:56px;height:4px;
+    background:var(--blue);
+    border-radius:4px;
+  }
+
+  .tweet{
+    display:flex;
+    gap:12px;
+    padding:12px 16px;
+    border-bottom:1px solid var(--border);
+    cursor:default;
+  }
+  .tweet:hover{background:var(--bg-hover);}
+  .avatar{
+    width:40px;height:40px;
+    border-radius:50%;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    font-size:15px;
+    color:#fff;
+  }
+  .tcol{flex:1;min-width:0;}
+  .thead{
+    display:flex;
+    align-items:center;
+    gap:4px;
+    font-size:14px;
+    flex-wrap:wrap;
+  }
+  .thead b{font-weight:700;}
+  .thead .u{color:var(--sub);}
+  .thead .dot{color:var(--sub);}
+  .badge{
+    width:16px;height:16px;
+    fill:var(--blue);
+    flex-shrink:0;
+  }
+  .official-badge{
+    font-size:10px;
+    background:var(--blue);
+    color:#fff;
+    padding:1px 6px;
+    border-radius:4px;
+    font-weight:700;
+    margin-left:2px;
+  }
+  .ttext{
+    font-size:15px;
+    line-height:1.4;
+    margin-top:2px;
+    white-space:pre-wrap;
+    word-break:break-word;
+  }
+  .ttext .mention{color:var(--blue);}
+  .quote-tag{
+    font-size:15px;
+    color:var(--sub);
+    margin-top:2px;
+  }
+  .actions{
+    display:flex;
+    justify-content:space-between;
+    max-width:340px;
+    margin-top:10px;
+    color:var(--sub);
+    font-size:13px;
+  }
+  .actions .a-item{
+    display:flex;
+    align-items:center;
+    gap:5px;
+  }
+  .actions svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;}
+  .actions .like svg{stroke:none;fill:currentColor;opacity:0.85;}
+  .actions .like{color:var(--pink);}
+  .actions .retweet{color:var(--green);}
+
+  .reply-line-wrap{
+    position:relative;
+  }
+  .thread-connector{
+    position:absolute;
+    left:35px;
+    top:0;
+    bottom:0;
+    width:2px;
+    background:var(--border);
+  }
+  .reply-block{
+    padding-left:28px;
+  }
+  .no-reply{
+    font-size:13px;
+    color:var(--sub);
+    font-style:italic;
+    padding:6px 16px 6px 68px;
+  }
+  .like-only{
+    font-size:12px;
+    color:var(--sub);
+    padding:2px 16px 8px 68px;
+    display:flex;
+    align-items:center;
+    gap:4px;
+  }
+  .like-only svg{width:13px;height:13px;fill:var(--pink);}
+
+  .divider-note{
+    text-align:center;
+    padding:14px;
+    color:var(--sub);
+    font-size:13px;
+    border-bottom:1px solid var(--border);
+    background:#0a0a0a;
+  }
+
+  .composer{
+    padding:12px 16px;
+    color:var(--sub);
+    font-size:14px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .composer .avatar{width:36px;height:36px;font-size:13px;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="header">
+    <svg class="back" viewBox="0 0 24 24" fill="currentColor"><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"/></svg>
+    <div class="title-block">
+      <h1>은서우</h1>
+      <span>게시물 24</span>
+    </div>
+  </div>
+
+  <div class="profile-banner"></div>
+  <div class="profile-head">
+    <button class="follow-btn">팔로우</button>
+    <div class="avatar-big">서</div>
+    <div class="profile-info">
+      <h2>은서우
+        <svg class="verified" viewBox="0 0 22 22"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.018-1.273.215-1.813.57-.54.354-.972.853-1.245 1.44-.607-.223-1.264-.27-1.897-.14-.634.132-1.218.437-1.687.882-.445.47-.75 1.053-.882 1.687-.13.633-.084 1.29.14 1.897-.586.274-1.084.705-1.438 1.246-.354.54-.552 1.17-.57 1.816.018.646.216 1.276.57 1.816.354.54.852.972 1.438 1.246-.224.607-.27 1.264-.14 1.897.132.634.437 1.217.882 1.687.47.443 1.053.749 1.687.88.633.132 1.29.084 1.897-.139.274.587.705 1.086 1.245 1.44.54.354 1.167.551 1.813.569.647-.018 1.276-.215 1.816-.57.54-.354.972-.853 1.245-1.44.607.224 1.264.271 1.898.14.634-.132 1.217-.438 1.687-.883.444-.47.75-1.053.882-1.687.13-.633.083-1.29-.14-1.897.586-.274 1.084-.705 1.438-1.246.354-.54.552-1.17.57-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg>
+      </h2>
+      <div class="handle">@eunseowoo_piano</div>
+      <div class="bio">클래식 피아니스트. 쇼팽 콩쿠르 우승. 그 별명은 부르지 마세요.<br>연습실 아니면 어딘가 헤매는 중.</div>
+      <div class="meta-row">
+        <span>🎹 Pianist</span>
+        <span>📍 Seoul, KR</span>
+        <span>📅 가입일: 2019년 3월</span>
+      </div>
+      <div class="stats-row">
+        <span><b>312</b> 팔로우 중</span>
+        <span><b>1.2M</b> 팔로워</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="active">게시물</div>
+    <div>답글</div>
+    <div>미디어</div>
+    <div>좋아요</div>
+  </div>
+
+  <div class="divider-note">🧵 답멘놀이: "은서우한테 답멘 받기" 대성황</div>
+
+  <!-- Root tweet -->
+  <div class="tweet">
+    <div class="avatar" style="background:linear-gradient(160deg,#cfd8e3,#8b96a8 60%,#4b5563);color:#1c1c1c;">서</div>
+    <div class="tcol">
+      <div class="thead">
+        <b>은서우</b><svg class="badge" viewBox="0 0 22 22" fill="currentColor"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.018-1.273.215-1.813.57-.54.354-.972.853-1.245 1.44-.607-.223-1.264-.27-1.897-.14-.634.132-1.218.437-1.687.882-.445.47-.75 1.053-.882 1.687-.13.633-.084 1.29.14 1.897-.586.274-1.084.705-1.438 1.246-.354.54-.552 1.17-.57 1.816.018.646.216 1.276.57 1.816.354.54.852.972 1.438 1.246-.224.607-.27 1.264-.14 1.897.132.634.437 1.217.882 1.687.47.443 1.053.749 1.687.88.633.132 1.29.084 1.897-.139.274.587.705 1.086 1.245 1.44.54.354 1.167.551 1.813.569.647-.018 1.276-.215 1.816-.57.54-.354.972-.853 1.245-1.44.607.224 1.264.271 1.898.14.634-.132 1.217-.438 1.687-.883.444-.47.75-1.053.882-1.687.13-.633.083-1.29-.14-1.897.586-.274 1.084-.705 1.438-1.246.354-.54.552-1.17.57-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg>
+        <span class="u">@eunseowoo_piano</span><span class="dot">·</span><span class="u">오후 9:12</span>
+      </div>
+      <div class="ttext">오늘 저녁 한가함. 아무나 멘션 걸어봐요, 몇 개 답해드림</div>
+      <div class="actions">
+        <div class="a-item">💬 <span>8.9K</span></div>
+        <div class="a-item retweet">🔁 <span>12.3K</span></div>
+        <div class="a-item like">❤ <span>41.2K</span></div>
+        <div class="a-item">📤</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thread 1 -->
+  <div class="reply-line-wrap">
+    <div class="thread-connector"></div>
+    <div class="tweet reply-block">
+      <div class="avatar" style="background:#7c5cff;">모</div>
+      <div class="tcol">
+        <div class="thead"><b>moonlightsonata_kr</b><span class="u">@moonlightsonata_kr</span></div>
+        <div class="ttext"><span class="mention">@eunseowoo_piano</span> 왕자님 저 오늘 시험 망했어요 위로해주세요</div>
+      </div>
+    </div>
+    <div class="tweet reply-block">
+      <div class="avatar" style="background:linear-gradient(160deg,#cfd8e3,#8b96a8 60%,#4b5563);color:#1c1c1c;">서</div>
+      <div class="tcol">
+        <div class="thead"><b>은서우</b><svg class="badge" viewBox="0 0 22 22" fill="currentColor"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.018-1.273.215-1.813.57-.54.354-.972.853-1.245 1.44-.607-.223-1.264-.27-1.897-.14-.634.132-1.218.437-1.687.882-.445.47-.75 1.053-.882 1.687-.13.633-.084 1.29.14 1.897-.586.274-1.084.705-1.438 1.246-.354.54-.552 1.17-.57 1.816.018.646.216 1.276.57 1.816.354.54.852.972 1.438 1.246-.224.607-.27 1.264-.14 1.897.132.634.437 1.217.882 1.687.47.443 1.053.749 1.687.88.633.132 1.29.084 1.897-.139.274.587.705 1.086 1.245 1.44.54.354 1.167.551 1.813.569.647-.018 1.276-.215 1.816-.57.54-.354.972-.853 1.245-1.44.607.224 1.264.271 1.898.14.634-.132 1.217-.438 1.687-.883.444-.47.75-1.053.882-1.687.13-.633.083-1.29-.14-1.897.586-.274 1.084-.705 1.438-1.246.354-.54.552-1.17.57-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg><span class="u">@eunseowoo_piano</span></div>
+        <div class="ttext"><span class="mention">@moonlightsonata_kr</span> 저도 어제 페달링 헛디뎠어요. 우리 둘 다 오늘 하루는 그냥 폐기하죠</div>
+        <div class="actions"><div class="a-item">💬</div><div class="a-item retweet">🔁</div><div class="a-item like">❤ <span>8.7K</span></div><div class="a-item">📤</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thread 2 -->
+  <div class="reply-line-wrap">
+    <div class="thread-connector"></div>
+    <div class="tweet reply-block">
+      <div class="avatar" style="background:#e8843c;">손</div>
+      <div class="tcol">
+        <div class="thead"><b>손덕후_02</b><span class="u">@son_dukhoo</span></div>
+        <div class="ttext"><span class="mention">@eunseowoo_piano</span> 손 사이즈 몇이에요</div>
+      </div>
+    </div>
+    <div class="tweet reply-block">
+      <div class="avatar" style="background:linear-gradient(160deg,#cfd8e3,#8b96a8 60%,#4b5563);color:#1c1c1c;">서</div>
+      <div class="tcol">
+        <div class="thead"><b>은서우</b><svg class="badge" viewBox="0 0 22 22" fill="currentColor"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.018-1.273.215-1.813.57-.54.354-.972.853-1.245 1.44-.607-.223-1.264-.27-1.897-.14-.634.132-1.218.437-1.687.882-.445.47-.75 1.053-.882 1.687-.13.633-.084 1.29.14 1.897-.586.274-1.084.705-1.438 1.246-.354.54-.552 1.17-.57 1.816.018.646.216 1.276.57 1.816.354.54.852.972 1.438 1.246-.224.607-.27 1.264-.14 1.897.132.634.437 1.217.882 1.687.47.443 1.053.749 1.687.88.633.132 1.29.084 1.897-.139.274.587.705 1.086 1.245 1.44.54.354 1.167.551 1.813.569.647-.018 1.276-.215 1.816-.57.54-.354.972-.853 1.245-1.44.607.224 1.264.271 1.898.14.634-.132 1.217-.438 1.687-.883.444-.47.75-1.053.882-1.687.13-.633.083-1.29-.14-1.897.586-.274 1.084-.705 1.438-1.246.354-.54.552-1.17.57-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg><span class="u">@eunseowoo_piano</span></div>
+        <div class="ttext"><span class="mention">@son_dukhoo</span> 이걸 왜 물어봐요</div>
+        <div class="actions"><div class="a-item">💬</div><div class="a-item retweet">🔁</div><div class="a-item like">❤ <span>15.2K</span></div><div class="a-item">📤</div></div>
+      </div>
+    </div>
+    <div class="tweet reply-block">
+      <div class="avatar" style="background:#e8843c;">손</div>
+      <div class="tcol">
+        <div class="thead"><b>손덕후_02</b><span class="u">@son_dukhoo</span></div>
+        <div class="ttext"><span class="mention">@eunseowoo_piano</span> 알려주실 때까지 안 물러남</div>
+      </div>
+    </div>
+    <div class="tweet reply-block">
+      <div class="avatar" style="background:linear-gradient(160deg,#cfd8e3,#8b96a8 60%,#4b5563);color:#1c1c1c;">서</div>
+      <div class="tcol">
+        <div class="thead"><b>은서우</b><svg class="badge" viewBox="0 0 22 22" fill="currentColor"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.018-1.273.215-1.813.57-.54.354-.972.853-1.245 1.44-.607-.223-1.264-.27-1.897-.14-.634.132-1.218.437-1.687.882-.445.47-.75 1.053-.882 1.687-.13.633-.084 1.29.14 1.897-.586.274-1.084.705-1.438 1.246-.354.54-.552 1.17-.57 1.816.018.646.216 1.276.57 1.816.354.54.852.972 1.438 1.246-.224.607-.27 1.264-.14 1.897.132.634.437 1.217.882 1.687.47.443 1.053.749 1.687.88.633.132 1.29.084 1.897-.139.274.587.705 1.086 1.245 1.44.54.354 1.167.551 1.813.569.647-.018 1.276-.215 1.816-.57.54-.354.972-.853 1.245-1.44.607.224 1.264.271 1.898.14.634-.132 1.217-.438 1.687-.883.444-.47.75-1.053.882-1.687.13-.633.083-1.29-.14-1.897.586-.274 1.084-.705 1.438-1.246.354-.54.552-1.17.57-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg><span class="u">@eunseowoo_piano</span></div>
+        <div class="ttext"><span class="mention">@son_dukhoo</span> …다음 질문</div>
+        <div class="actions"><div class="a-item">💬</div><div class="a-item retweet">🔁</div><div class="a-item like">❤ <span>19.8K</span></div><div class="a-item">📤</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thread 3 -->
+  <div class="reply-line-wrap">
+    <div class="thread-connector"></div>
+    <div class="tweet reply-block">
+      <div class="avatar" style="background:#c94f6d;">배</div>
+      <div class="tcol">
+        <div class="thead"><b>배고파요원1</b><span class="u">@hungry_agent1</span></div>
+        <div class="ttext"><span class="mention">@eunseowoo_piano</span> 배고프세요?</div>
+      </div>
+    </div>
+    <div class="tweet reply-block">
+      <div class="avatar" style="background:linear-gradient(160deg,#cfd8e3,#8b96a8 60%,#4b5563);color:#1c1c1c;">서</div>
+      <div class="tcol">
+        <div class="thead"><b>은서우</b><svg class="badge" viewBox="0 0 22 22" fill="currentColor"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.018-1.273.215-1.813.57-.54.354-.972.853-1.245 1.44-.607-.223-1.264-.27-1.897-.14-.634.132-1.218.437-1.687.882-.445.47-.75 1.053-.882 1.687-.13.633-.084 1.29.14 1.897-.586.274-1.084.705-1.438 1.246-.354.54-.552 1.17-.57 1.816.018.646.216 1.276.57 1.816.354.54.852.972 1.438 1.246-.224.607-.27 1.264-.14 1.897.132.634.437 1.217.882 1.687.47.443 1.053.749 1.687.88.633.132 1.29.084 1.897-.139.274.587.705 1.086 1.245 1.44.54.354 1.167.551 1.813.569.647-.018 1.276-.215 1.816-.57.54-.354.972-.853 1.245-1.44.607.224 1.264.271 1.898.14.634-.132 1.217-.438 1.687-.883.444-.47.75-1.053.882-1.687.13-.633.083-1.29-.14-1.897.586-.274 1.084-.705 1.438-1.246.354-.54.552-1.17.57-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg><span class="u">@eunseowoo_piano</span></div>
+        <div class="ttext"><span class="mention">@hungry_agent1</span> 아뇨 방금 먹었는데요</div>
+        <div class="actions"><div class="a-item">💬</div><div class="a-item retweet">🔁</div><div class="a-item like">❤ <span>6.1K</span></div><div class="a-item">📤</div></div>
+      </div>
+    </div>
+    <div class="tweet reply-block">
+      <div class="avatar" style="background:#c94f6d;">배</div>
+      <div class="tcol">
+        <div class="thead"><b>배고파요원1</b><span class="u">@hungry_agent1</span></div>
+        <div class="ttext"><span class="mention">@eunseowoo_piano</span> 아 다행이다 실검 안 뜨겠네요</div>
+      </div>
+    </div>
+    <div class="tweet reply-block">
+      <div class="avatar" style="background:linear-gradient(160deg,#cfd8e3,#8b96a8 60%,#4b5563);color:#1c1c1c;">서</div>
+      <div class="tcol">
+        <div class="thead"><b>은서우</b><svg class="badge" viewBox="0 0 22 22" fill="currentColor"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.018-1.273.215-1.813.57-.54.354-.972.853-1.245 1.44-.607-.223-1.264-.27-1.897-.14-.634.132-1.218.437-1.687.882-.445.47-.75 1.053-.882 1.687-.13.633-.084 1.29.14 1.897-.586.274-1.084.705-1.438 1.246-.354.54-.552 1.17-.57 1.816.018.646.216 1.276.57 1.816.354.54.852.972 1.438 1.246-.224.607-.27 1.264-.14 1.897.132.634.437 1.217.882 1.687.47.443 1.053.749 1.687.88.633.132 1.29.084 1.897-.139.274.587.705 1.086 1.245 1.44.54.354 1.167.551 1.813.569.647-.018 1.276-.215 1.816-.57.54-.354.972-.853 1.245-1.44.607.224 1.264.271 1.898.14.634-.132 1.217-.438 1.687-.883.444-.47.75-1.053.882-1.687.13-.633.083-1.29-.14-1.897.586-.274 1.084-.705 1.438-1.246.354-.54.552-1.17.57-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg><span class="u">@eunseowoo_piano</span></div>
+        <div class="ttext"><span class="mention">@hungry_agent1</span> 그건 또 무슨 소리예요</div>
+        <div class="actions"><div class="a-item">💬</div><div class="a-item retweet">🔁</div><div class="a-item like">❤ <span>22.4K</span></div><div class="a-item">📤</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thread 4 -->
+  <div class="reply-line-wrap">
+    <div class="thread-connector"></div>
+    <div class="tweet reply-block">
+      <div class="avatar" style="background:#4fa8e8;">신</div>
+      <div class="tcol">
+        <div class="thead"><b>신입팬22</b><span class="u">@newbie_fan22</span></div>
+        <div class="ttext"><span class="mention">@eunseowoo_piano</span> 왕자님 저 오늘 처음 팔로우했어요! 잘 부탁드려요</div>
+      </div>
+    </div>
+    <div class="tweet reply-block">
+      <div class="avatar" style="background:linear-gradient(160deg,#cfd8e3,#8b96a8 60%,#4b5563);color:#1c1c1c;">서</div>
+      <div class="tcol">
+        <div class="thead"><b>은서우</b><svg class="badge" viewBox="0 0 22 22" fill="currentColor"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.018-1.273.215-1.813.57-.54.354-.972.853-1.245 1.44-.607-.223-1.264-.27-1.897-.14-.634.132-1.218.437-1.687.882-.445.47-.75 1.053-.882 1.687-.13.633-.084 1.29.14 1.897-.586.274-1.084.705-1.438 1.246-.354.54-.552 1.17-.57 1.816.018.646.216 1.276.57 1.816.354.54.852.972 1.438 1.246-.224.607-.27 1.264-.14 1.897.132.634.437 1.217.882 1.687.47.443 1.053.749 1.687.88.633.132 1.29.084 1.897-.139.274.587.705 1.086 1.245 1.44.54.354 1.167.551 1.813.569.647-.018 1.276-.215 1.816-.57.54-.354.972-.853 1.245-1.44.607.224 1.264.271 1.898.14.634-.132 1.217-.438 1.687-.883.444-.47.75-1.053.882-1.687.13-.633.083-1.29-.14-1.897.586-.274 1.084-.705 1.438-1.246.354-.54.552-1.17.57-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg><span class="u">@eunseowoo_piano</span></div>
+        <div class="ttext"><span class="mention">@newbie_fan22</span> 잘 왔어요. 근데 그 별명은 좀…</div>
+        <div class="actions"><div class="a-item">💬</div><div class="a-item retweet">🔁</div><div class="a-item like">❤ <span>9.3K</span></div><div class="a-item">📤</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thread 5 - the ignored one -->
+  <div class="reply-line-wrap">
+    <div class="thread-connector"></div>
+    <div class="tweet reply-block">
+      <div class="avatar" style="background:#9c7ce8;">클</div>
+      <div class="tcol">
+        <div class="thead"><b>클래식언니</b><span class="u">@classic_unnie</span></div>
+        <div class="ttext"><span class="mention">@eunseowoo_piano</span> 라흐마니노프 2번 언제 다시 치실 거예요</div>
+      </div>
+    </div>
+  </div>
+  <div class="no-reply">↳ 답멘 없음</div>
+  <div class="reply-line-wrap">
+    <div class="tweet reply-block">
+      <div class="avatar" style="background:#e0a840;">떡</div>
+      <div class="tcol">
+        <div class="thead"><b>떡밥수집가</b><span class="u">@ddeokbap_collector</span></div>
+        <div class="ttext">아 이건 씹혔다ㅋㅋㅋㅋ 역시 성역</div>
+        <div class="actions"><div class="a-item">💬</div><div class="a-item retweet">🔁</div><div class="a-item like">❤ <span>18.9K</span></div><div class="a-item">📤</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thread 6 -->
+  <div class="reply-line-wrap">
+    <div class="thread-connector"></div>
+    <div class="tweet reply-block">
+      <div class="avatar" style="background:#e0a840;">떡</div>
+      <div class="tcol">
+        <div class="thead"><b>떡밥수집가</b><span class="u">@ddeokbap_collector</span></div>
+        <div class="ttext"><span class="mention">@eunseowoo_piano</span> 요즘 듣는 노래 있으세요</div>
+      </div>
+    </div>
+    <div class="tweet reply-block">
+      <div class="avatar" style="background:linear-gradient(160deg,#cfd8e3,#8b96a8 60%,#4b5563);color:#1c1c1c;">서</div>
+      <div class="tcol">
+        <div class="thead"><b>은서우</b><svg class="badge" viewBox="0 0 22 22" fill="currentColor"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.018-1.273.215-1.813.57-.54.354-.972.853-1.245 1.44-.607-.223-1.264-.27-1.897-.14-.634.132-1.218.437-1.687.882-.445.47-.75 1.053-.882 1.687-.13.633-.084 1.29.14 1.897-.586.274-1.084.705-1.438 1.246-.354.54-.552 1.17-.57 1.816.018.646.216 1.276.57 1.816.354.54.852.972 1.438 1.246-.224.607-.27 1.264-.14 1.897.132.634.437 1.217.882 1.687.47.443 1.053.749 1.687.88.633.132 1.29.084 1.897-.139.274.587.705 1.086 1.245 1.44.54.354 1.167.551 1.813.569.647-.018 1.276-.215 1.816-.57.54-.354.972-.853 1.245-1.44.607.224 1.264.271 1.898.14.634-.132 1.217-.438 1.687-.883.444-.47.75-1.053.882-1.687.13-.633.083-1.29-.14-1.897.586-.274 1.084-.705 1.438-1.246.354-.54.552-1.17.57-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg><span class="u">@eunseowoo_piano</span></div>
+        <div class="ttext"><span class="mention">@ddeokbap_collector</span> 클래식이요</div>
+        <div class="actions"><div class="a-item">💬</div><div class="a-item retweet">🔁</div><div class="a-item like">❤ <span>4.2K</span></div><div class="a-item">📤</div></div>
+      </div>
+    </div>
+    <div class="tweet reply-block">
+      <div class="avatar" style="background:#e0a840;">떡</div>
+      <div class="tcol">
+        <div class="thead"><b>떡밥수집가</b><span class="u">@ddeokbap_collector</span></div>
+        <div class="ttext"><span class="mention">@eunseowoo_piano</span> 아 네... 시티팝은요</div>
+      </div>
+    </div>
+    <div class="tweet reply-block">
+      <div class="avatar" style="background:linear-gradient(160deg,#cfd8e3,#8b96a8 60%,#4b5563);color:#1c1c1c;">서</div>
+      <div class="tcol">
+        <div class="thead"><b>은서우</b><svg class="badge" viewBox="0 0 22 22" fill="currentColor"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.018-1.273.215-1.813.57-.54.354-.972.853-1.245 1.44-.607-.223-1.264-.27-1.897-.14-.634.132-1.218.437-1.687.882-.445.47-.75 1.053-.882 1.687-.13.633-.084 1.29.14 1.897-.586.274-1.084.705-1.438 1.246-.354.54-.552 1.17-.57 1.816.018.646.216 1.276.57 1.816.354.54.852.972 1.438 1.246-.224.607-.27 1.264-.14 1.897.132.634.437 1.217.882 1.687.47.443 1.053.749 1.687.88.633.132 1.29.084 1.897-.139.274.587.705 1.086 1.245 1.44.54.354 1.167.551 1.813.569.647-.018 1.276-.215 1.816-.57.54-.354.972-.853 1.245-1.44.607.224 1.264.271 1.898.14.634-.132 1.217-.438 1.687-.883.444-.47.75-1.053.882-1.687.13-.633.083-1.29-.14-1.897.586-.274 1.084-.705 1.438-1.246.354-.54.552-1.17.57-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg><span class="u">@eunseowoo_piano</span></div>
+        <div class="ttext"><span class="mention">@ddeokbap_collector</span> 몰라요 그런 거</div>
+        <div class="actions"><div class="a-item">💬 <span>3.1K</span></div><div class="a-item retweet">🔁</div><div class="a-item like">❤ <span>27.6K</span></div><div class="a-item">📤</div></div>
+      </div>
+    </div>
+    <div class="tweet reply-block">
+      <div class="avatar" style="background:#7c5cff;">모</div>
+      <div class="tcol">
+        <div class="thead"><b>moonlightsonata_kr</b><span class="u">@moonlightsonata_kr</span></div>
+        <div class="ttext">방금 부인 속도 실화냐 저거 찔린 사람 반응인데</div>
+        <div class="actions"><div class="a-item">💬</div><div class="a-item retweet">🔁</div><div class="a-item like">❤ <span>12.7K</span></div><div class="a-item">📤</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thread 7 -->
+  <div class="reply-line-wrap">
+    <div class="thread-connector"></div>
+    <div class="tweet reply-block">
+      <div class="avatar" style="background:#5cb87c;">f</div>
+      <div class="tcol">
+        <div class="thead"><b>fan_since_debut</b><span class="u">@fan_since_debut</span></div>
+        <div class="ttext"><span class="mention">@eunseowoo_piano</span> 저 오늘 리사이틀 앞자리 예매 성공했어요!!</div>
+      </div>
+    </div>
+    <div class="tweet reply-block">
+      <div class="avatar" style="background:linear-gradient(160deg,#cfd8e3,#8b96a8 60%,#4b5563);color:#1c1c1c;">서</div>
+      <div class="tcol">
+        <div class="thead"><b>은서우</b><svg class="badge" viewBox="0 0 22 22" fill="currentColor"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.018-1.273.215-1.813.57-.54.354-.972.853-1.245 1.44-.607-.223-1.264-.27-1.897-.14-.634.132-1.218.437-1.687.882-.445.47-.75 1.053-.882 1.687-.13.633-.084 1.29.14 1.897-.586.274-1.084.705-1.438 1.246-.354.54-.552 1.17-.57 1.816.018.646.216 1.276.57 1.816.354.54.852.972 1.438 1.246-.224.607-.27 1.264-.14 1.897.132.634.437 1.217.882 1.687.47.443 1.053.749 1.687.88.633.132 1.29.084 1.897-.139.274.587.705 1.086 1.245 1.44.54.354 1.167.551 1.813.569.647-.018 1.276-.215 1.816-.57.54-.354.972-.853 1.245-1.44.607.224 1.264.271 1.898.14.634-.132 1.217-.438 1.687-.883.444-.47.75-1.053.882-1.687.13-.633.083-1.29-.14-1.897.586-.274 1.084-.705 1.438-1.246.354-.54.552-1.17.57-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg><span class="u">@eunseowoo_piano</span></div>
+        <div class="ttext"><span class="mention">@fan_since_debut</span> 잘하셨어요. 근데 앞자리는 제 실수 제일 잘 보이는 자리인데 괜찮아요?</div>
+        <div class="actions"><div class="a-item">💬</div><div class="a-item retweet">🔁</div><div class="a-item like">❤ <span>10.5K</span></div><div class="a-item">📤</div></div>
+      </div>
+    </div>
+    <div class="tweet reply-block">
+      <div class="avatar" style="background:#5cb87c;">f</div>
+      <div class="tcol">
+        <div class="thead"><b>fan_since_debut</b><span class="u">@fan_since_debut</span></div>
+        <div class="ttext"><span class="mention">@eunseowoo_piano</span> 그거 각오하고 예매함</div>
+      </div>
+    </div>
+    <div class="tweet reply-block">
+      <div class="avatar" style="background:linear-gradient(160deg,#cfd8e3,#8b96a8 60%,#4b5563);color:#1c1c1c;">서</div>
+      <div class="tcol">
+        <div class="thead"><b>은서우</b><svg class="badge" viewBox="0 0 22 22" fill="currentColor"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.018-1.273.215-1.813.57-.54.354-.972.853-1.245 1.44-.607-.223-1.264-.27-1.897-.14-.634.132-1.218.437-1.687.882-.445.47-.75 1.053-.882 1.687-.13.633-.084 1.29.14 1.897-.586.274-1.084.705-1.438 1.246-.354.54-.552 1.17-.57 1.816.018.646.216 1.276.57 1.816.354.54.852.972 1.438 1.246-.224.607-.27 1.264-.14 1.897.132.634.437 1.217.882 1.687.47.443 1.053.749 1.687.88.633.132 1.29.084 1.897-.139.274.587.705 1.086 1.245 1.44.54.354 1.167.551 1.813.569.647-.018 1.276-.215 1.816-.57.54-.354.972-.853 1.245-1.44.607.224 1.264.271 1.898.14.634-.132 1.217-.438 1.687-.883.444-.47.75-1.053.882-1.687.13-.633.083-1.29-.14-1.897.586-.274 1.084-.705 1.438-1.246.354-.54.552-1.17.57-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg><span class="u">@eunseowoo_piano</span></div>
+        <div class="ttext"><span class="mention">@fan_since_debut</span> 든든하네요</div>
+        <div class="actions"><div class="a-item">💬</div><div class="a-item retweet">🔁</div><div class="a-item like">❤ <span>14.1K</span></div><div class="a-item">📤</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thread 8 - liked only -->
+  <div class="reply-line-wrap">
+    <div class="thread-connector"></div>
+    <div class="tweet reply-block">
+      <div class="avatar" style="background:#c95cd6;">k</div>
+      <div class="tcol">
+        <div class="thead"><b>keys_and_regret</b><span class="u">@keys_and_regret</span></div>
+        <div class="ttext"><span class="mention">@eunseowoo_piano</span> 오늘 안경 쓰셨어요?</div>
+      </div>
+    </div>
+    <div class="tweet reply-block">
+      <div class="avatar" style="background:linear-gradient(160deg,#cfd8e3,#8b96a8 60%,#4b5563);color:#1c1c1c;">서</div>
+      <div class="tcol">
+        <div class="thead"><b>은서우</b><svg class="badge" viewBox="0 0 22 22" fill="currentColor"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.018-1.273.215-1.813.57-.54.354-.972.853-1.245 1.44-.607-.223-1.264-.27-1.897-.14-.634.132-1.218.437-1.687.882-.445.47-.75 1.053-.882 1.687-.13.633-.084 1.29.14 1.897-.586.274-1.084.705-1.438 1.246-.354.54-.552 1.17-.57 1.816.018.646.216 1.276.57 1.816.354.54.852.972 1.438 1.246-.224.607-.27 1.264-.14 1.897.132.634.437 1.217.882 1.687.47.443 1.053.749 1.687.88.633.132 1.29.084 1.897-.139.274.587.705 1.086 1.245 1.44.54.354 1.167.551 1.813.569.647-.018 1.276-.215 1.816-.57.54-.354.972-.853 1.245-1.44.607.224 1.264.271 1.898.14.634-.132 1.217-.438 1.687-.883.444-.47.75-1.053.882-1.687.13-.633.083-1.29-.14-1.897.586-.274 1.084-.705 1.438-1.246.354-.54.552-1.17.57-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg><span class="u">@eunseowoo_piano</span></div>
+        <div class="ttext"><span class="mention">@keys_and_regret</span> 그건 왜 궁금한데요</div>
+        <div class="actions"><div class="a-item">💬</div><div class="a-item retweet">🔁</div><div class="a-item like">❤ <span>8.4K</span></div><div class="a-item">📤</div></div>
+      </div>
+    </div>
+    <div class="tweet reply-block">
+      <div class="avatar" style="background:#c95cd6;">k</div>
+      <div class="tcol">
+        <div class="thead"><b>keys_and_regret</b><span class="u">@keys_and_regret</span></div>
+        <div class="ttext"><span class="mention">@eunseowoo_piano</span> 그냥요...</div>
+      </div>
+    </div>
+  </div>
+  <div class="like-only"><svg viewBox="0 0 24 24"><path d="M12 21.638h-.014C9.403 21.59 1.95 14.856 1.95 8.478c0-3.064 2.525-5.754 5.403-5.754 2.29 0 3.83 1.58 4.646 2.73.813-1.14 2.353-2.73 4.646-2.73 2.878 0 5.403 2.69 5.403 5.754 0 6.378-7.454 13.112-10.037 13.16z"/></svg> 은서우님이 좋아요를 눌렀습니다 (답멘 없음)</div>
+  <div class="reply-line-wrap">
+    <div class="tweet reply-block">
+      <div class="avatar" style="background:#7c5cff;">모</div>
+      <div class="tcol">
+        <div class="thead"><b>moonlightsonata_kr</b><span class="u">@moonlightsonata_kr</span></div>
+        <div class="ttext">좋아요만 누르고 답을 안 함... 이건 뭘 의미하는가</div>
+        <div class="actions"><div class="a-item">💬</div><div class="a-item retweet">🔁</div><div class="a-item like">❤ <span>16.3K</span></div><div class="a-item">📤</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Closing tweet -->
+  <div class="tweet">
+    <div class="avatar" style="background:linear-gradient(160deg,#cfd8e3,#8b96a8 60%,#4b5563);color:#1c1c1c;">서</div>
+    <div class="tcol">
+      <div class="thead">
+        <b>은서우</b><svg class="badge" viewBox="0 0 22 22" fill="currentColor"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.018-1.273.215-1.813.57-.54.354-.972.853-1.245 1.44-.607-.223-1.264-.27-1.897-.14-.634.132-1.218.437-1.687.882-.445.47-.75 1.053-.882 1.687-.13.633-.084 1.29.14 1.897-.586.274-1.084.705-1.438 1.246-.354.54-.552 1.17-.57 1.816.018.646.216 1.276.57 1.816.354.54.852.972 1.438 1.246-.224.607-.27 1.264-.14 1.897.132.634.437 1.217.882 1.687.47.443 1.053.749 1.687.88.633.132 1.29.084 1.897-.139.274.587.705 1.086 1.245 1.44.54.354 1.167.551 1.813.569.647-.018 1.276-.215 1.816-.57.54-.354.972-.853 1.245-1.44.607.224 1.264.271 1.898.14.634-.132 1.217-.438 1.687-.883.444-.47.75-1.053.882-1.687.13-.633.083-1.29-.14-1.897.586-.274 1.084-.705 1.438-1.246.354-.54.552-1.17.57-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg>
+        <span class="u">@eunseowoo_piano</span><span class="dot">·</span><span class="u">오후 11:47</span>
+      </div>
+      <div class="ttext">오늘은 여기까지. 내일 리허설 있어서 자러 갑니다</div>
+      <div class="actions">
+        <div class="a-item">💬 <span>4.2K</span></div>
+        <div class="a-item retweet">🔁</div>
+        <div class="a-item like">❤ <span>33.7K</span></div>
+        <div class="a-item">📤</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
